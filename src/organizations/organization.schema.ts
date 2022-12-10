@@ -15,6 +15,9 @@ export class Organization {
 
   @Prop()
   description: string;
+
+  @Prop()
+  creator_id: string;
 }
 
 export const OrganizationSchema = SchemaFactory.createForClass(Organization);

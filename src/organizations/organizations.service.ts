@@ -25,4 +25,22 @@ export class OrganizationsService {
       .findOne({ id: _id })
       .exec()) as unknown as Organization;
   }
+
+  async findOneByCreator(creator_id: string): Promise<Organization> {
+    const res = (await this.organizationModel
+      .findOne({ creator_id })
+      .exec()) as unknown as Organization;
+    console.log(res, 'res');
+    return res;
+  }
+
+  async updateOne(
+    _id: string,
+    data: Partial<Organization>,
+  ): Promise<Organization> {
+    return (await this.organizationModel.findByIdAndUpdate(
+      { id: _id },
+      { ...data },
+    )) as unknown as Organization;
+  }
 }
