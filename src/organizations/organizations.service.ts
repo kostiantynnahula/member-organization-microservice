@@ -5,8 +5,6 @@ import { OrganizationDocument, Organization } from './organization.schema';
 
 @Injectable()
 export class OrganizationsService {
-  private collection: Map<string, Organization> = new Map();
-
   constructor(
     @InjectModel(Organization.name)
     private organizationModel: Model<OrganizationDocument>,

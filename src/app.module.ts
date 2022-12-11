@@ -5,6 +5,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MembersModule } from './members/members.module';
+import { InvitesModule } from './invites/invites.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MembersModule } from './members/members.module';
     }),
     OrganizationsModule,
     MembersModule,
+    InvitesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
