@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Member } from './../members/member.schema';
 
 export type OrganizationDocument = HydratedDocument<SchemaFactory>;
 
@@ -10,14 +11,27 @@ export type OrganizationDocument = HydratedDocument<SchemaFactory>;
 export class Organization {
   _id?: string;
 
-  @Prop()
+  @Prop({
+    trim: true,
+    maxlength: 255,
+    required: true,
+  })
   name: string;
 
-  @Prop()
+  @Prop({
+    trim: true,
+  })
   description: string;
 
-  @Prop()
+  @Prop({
+    trim: true,
+    required: true,
+    maxlength: 255,
+  })
   creator_id: string;
+
+  @Prop()
+  members: Member[];
 }
 
 export const OrganizationSchema = SchemaFactory.createForClass(Organization);

@@ -1,7 +1,5 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { OrganizationInput } from './models';
-import { v4 as uuidv4 } from 'uuid';
 import { InjectModel } from '@nestjs/mongoose';
 import { OrganizationDocument, Organization } from './organization.schema';
 
@@ -30,7 +28,6 @@ export class OrganizationsService {
     const res = (await this.organizationModel
       .findOne({ creator_id })
       .exec()) as unknown as Organization;
-    console.log(res, 'res');
     return res;
   }
 

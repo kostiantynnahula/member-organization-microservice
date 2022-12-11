@@ -13,7 +13,7 @@ export class OrganizationsController {
     cmd: 'create',
   })
   async createItem(@Payload() payload: CreateOrganizationInput) {
-    return await this.organizationService.create(payload);
+    return await this.organizationService.create({ ...payload, members: [] });
   }
 
   @MessagePattern({
@@ -21,10 +21,7 @@ export class OrganizationsController {
     cmd: 'get-by-creator',
   })
   async getByCreator(creator_id: string) {
-    console.log(creator_id);
-    const result = await this.organizationService.findOneByCreator(creator_id);
-    console.log(result, 'result');
-    return result;
+    return await this.organizationService.findOneByCreator(creator_id);
   }
 
   @MessagePattern({
