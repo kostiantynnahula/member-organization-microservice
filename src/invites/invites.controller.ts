@@ -3,6 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InvitesService } from './invites.service';
 import { CreateInviteInput } from './inputs/create.input';
 import { UpdateInviteInput } from './inputs/update.input';
+import { GetByEmail } from './inputs/get-by-email';
 
 @Controller('invites')
 export class InvitesController {
@@ -10,17 +11,17 @@ export class InvitesController {
 
   @MessagePattern({
     entity: 'invite',
-    cmd: 'create',
+    cmd: 'create-one',
   })
-  async createItem(@Payload() payload: CreateInviteInput) {
+  async createOne(@Payload() payload: CreateInviteInput) {
     return await this.invitesService.createOne(payload);
   }
 
   @MessagePattern({
     entity: 'invite',
-    cmd: 'update',
+    cmd: 'update-one',
   })
-  async updateItem(@Payload() payload: UpdateInviteInput) {
+  async updateOne(@Payload() payload: UpdateInviteInput) {
     const { _id, status } = payload;
     return await this.invitesService.updateOne(_id, { status });
   }
@@ -29,15 +30,24 @@ export class InvitesController {
     entity: 'invite',
     cmd: 'get-related-invites',
   })
-  async getInvites(member_id: string) {
-    return await this.invitesService.getRelatedInvites(member_id);
+  async getInvites(email: string) {
+    return await this.invitesService.getRelatedInvites(email);
   }
 
   @MessagePattern({
     entity: 'invite',
-    cmd: 'get-item',
+    cmd: 'get-one',
   })
-  async getItem(_id: string) {
+  async getOne(_id: string) {
     return await this.invitesService.getOne(_id);
+  }
+
+  @MessagePattern({
+    entity: 'invite',
+    cmd: 'get-by-email',
+  })
+  async getOneByIdAndEmail(@Payload() payload: GetByEmail) {
+    const { _id, email } = payload;
+    return await this.invitesService.getOneByEmail(_id, email);
   }
 }

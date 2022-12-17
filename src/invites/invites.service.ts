@@ -21,10 +21,12 @@ export class InvitesService {
     _id: string,
     data: Partial<Omit<Invite, '_id'>>,
   ): Promise<Invite> {
-    return (await this.inviteModel.findByIdAndUpdate(
-      { id: _id },
-      { ...data },
-    )) as unknown as Invite;
+    return (await this.inviteModel.findByIdAndUpdate(_id, {
+      ...data,
+    }, {
+      returnDocument: 'after',
+      lean: true,
+    })) as unknown as Invite;
   }
 
   async getOne(_id: string) {
@@ -35,9 +37,15 @@ export class InvitesService {
 
   async getRelatedInvites(member_id: string): Promise<Invite> {
     const res = await this.inviteModel
-      .find()
-      .or([{ 'from.id': member_id }, { 'to.id': member_id }])
+      .find({
+        $or: [{ from: member_id }, { to: member_id }],
+      })
       .exec();
+    return res as unknown as Invite;
+  }
+
+  async getOneByEmail(_id: string, email: string): Promise<Invite> {
+    const res = await this.inviteModel.findOne({ email, _id }).exec();
     return res as unknown as Invite;
   }
 }

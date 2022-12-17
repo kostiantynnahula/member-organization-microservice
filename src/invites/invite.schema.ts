@@ -28,7 +28,7 @@ export class Invite {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: Organization.name,
-    required: true,
+    required: false,
   })
   @Type(() => Organization)
   organization: Organization;
@@ -36,20 +36,22 @@ export class Invite {
   @Prop({
     required: true,
   })
-  from: Member;
+  from: string;
 
   @Prop({
     required: true,
   })
-  to: Member;
+  to: string;
 
   @Prop({
     enum: InviteType,
+    required: true,
   })
   type: InviteType;
 
   @Prop({
     enum: InviteStatus,
+    default: InviteStatus.PENDING,
   })
   status: InviteStatus;
 }
