@@ -3,7 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InvitesService } from './invites.service';
 import { CreateInviteInput } from './inputs/create.input';
 import { UpdateInviteInput } from './inputs/update.input';
-import { GetByEmail } from './inputs/get-by-email';
+import { GetByEmail } from './inputs/get-by-email.input';
 
 @Controller('invites')
 export class InvitesController {

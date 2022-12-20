@@ -21,12 +21,14 @@ export class InvitesService {
     _id: string,
     data: Partial<Omit<Invite, '_id'>>,
   ): Promise<Invite> {
-    return (await this.inviteModel.findByIdAndUpdate(_id, {
-      ...data,
-    }, {
-      returnDocument: 'after',
-      lean: true,
-    })) as unknown as Invite;
+    return (await this.inviteModel.findByIdAndUpdate(
+      _id,
+      { ...data },
+      {
+        returnDocument: 'after',
+        lean: true,
+      },
+    )) as unknown as Invite;
   }
 
   async getOne(_id: string) {
