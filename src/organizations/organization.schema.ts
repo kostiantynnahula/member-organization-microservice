@@ -23,13 +23,6 @@ export class Organization {
   })
   description: string;
 
-  @Prop({
-    trim: true,
-    required: true,
-    maxlength: 255,
-  })
-  creator_id: string;
-
   @Prop()
   members: Member[];
 }

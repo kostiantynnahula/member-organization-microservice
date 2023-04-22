@@ -3,6 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationInput } from './inputs/create.input';
 import { UpdateOrganizationInput } from './inputs/update.input';
+import { Role } from 'src/members/member.schema';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -13,15 +14,12 @@ export class OrganizationsController {
     cmd: 'create',
   })
   async createItem(@Payload() payload: CreateOrganizationInput) {
-    return await this.organizationService.create({ ...payload, members: [] });
-  }
-
-  @MessagePattern({
-    entity: 'organization',
-    cmd: 'get-by-creator',
-  })
-  async getByCreator(creator_id: string) {
-    return await this.organizationService.findOneByCreator(creator_id);
+    const { creator, name, description } = payload;
+    return await this.organizationService.create({
+      name,
+      description,
+      members: [{ ...creator, role: Role.CREATOR }],
+    });
   }
 
   @MessagePattern({
@@ -29,8 +27,15 @@ export class OrganizationsController {
     cmd: 'get-one',
   })
   async getItem(_id: string) {
-    console.log('get one');
     return await this.organizationService.getOne(_id);
+  }
+
+  @MessagePattern({
+    entity: 'organization',
+    cmd: 'get-list',
+  })
+  async getList(member_id: string) {
+    return await this.organizationService.findByMember(member_id);
   }
 
   @MessagePattern({
@@ -39,6 +44,6 @@ export class OrganizationsController {
   })
   async updateItem(@Payload() payload: UpdateOrganizationInput) {
     const { _id, ...data } = payload;
-    return await this.organizationService.updateOne(_id, data);
+    // return await this.organizationService.updateOne(_id, data);
   }
 }

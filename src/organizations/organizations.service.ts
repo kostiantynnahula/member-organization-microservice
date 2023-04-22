@@ -22,11 +22,10 @@ export class OrganizationsService {
       .exec()) as unknown as Organization;
   }
 
-  async findOneByCreator(creator_id: string): Promise<Organization> {
-    const res = (await this.organizationModel
-      .findOne({ creator_id })
-      .exec()) as unknown as Organization;
-    return res;
+  async findByMember(member_id: string) {
+    return (await this.organizationModel
+      .find({ members: { $elemMatch: { _id: member_id } } })
+      .exec()) as unknown as Organization[];
   }
 
   async updateOne(

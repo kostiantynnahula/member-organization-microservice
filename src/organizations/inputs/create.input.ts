@@ -1,4 +1,5 @@
 import { IsDefined, MaxLength, IsNotEmpty } from 'class-validator';
+import { Member } from 'src/members/member.schema';
 
 export class CreateOrganizationInput {
   @IsDefined()
@@ -10,7 +11,6 @@ export class CreateOrganizationInput {
   description: string;
 
   @IsDefined()
-  @IsNotEmpty()
   @MaxLength(255)
-  creator_id: string;
+  creator: Member;
 }
