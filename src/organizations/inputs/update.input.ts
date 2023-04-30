@@ -13,6 +13,8 @@ export class UpdateOrganizationInput {
   @IsNotEmpty()
   description: string;
 
-  @IsOptional()
-  members: Member[];
+  @IsDefined()
+  member_id: string;
+  // @IsOptional()
+  // members: Member[];
 }

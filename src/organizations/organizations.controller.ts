@@ -3,6 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationInput } from './inputs/create.input';
 import { UpdateOrganizationInput } from './inputs/update.input';
+import { GetOrganizationInput } from './inputs/get.input';
 import { Role } from 'src/members/member.schema';
 
 @Controller('organizations')
@@ -26,8 +27,13 @@ export class OrganizationsController {
     entity: 'organization',
     cmd: 'get-one',
   })
-  async getItem(_id: string) {
-    return await this.organizationService.getOne(_id);
+  async getItem(@Payload() payload: GetOrganizationInput) {
+    const org = await this.organizationService.getOne(
+      payload._id,
+      payload.member_id,
+    );
+
+    return org;
   }
 
   @MessagePattern({
@@ -43,7 +49,7 @@ export class OrganizationsController {
     cmd: 'update',
   })
   async updateItem(@Payload() payload: UpdateOrganizationInput) {
-    const { _id, ...data } = payload;
-    // return await this.organizationService.updateOne(_id, data);
+    const { _id, member_id, ...data } = payload;
+    return await this.organizationService.updateOne(_id, member_id, data);
   }
 }

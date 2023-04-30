@@ -16,9 +16,9 @@ export class OrganizationsService {
     return res as unknown as Organization;
   }
 
-  async getOne(_id: string): Promise<Organization> {
+  async getOne(_id: string, member_id: string): Promise<Organization> {
     return (await this.organizationModel
-      .findOne({ id: _id })
+      .findOne({ id: _id, members: { $elemMatch: { _id: member_id } } })
       .exec()) as unknown as Organization;
   }
 
@@ -30,11 +30,11 @@ export class OrganizationsService {
 
   async updateOne(
     _id: string,
+    member_id: string,
     data: Partial<Organization>,
   ): Promise<Organization> {
-    return (await this.organizationModel.findByIdAndUpdate(
-      { id: _id },
-      { ...data },
-    )) as unknown as Organization;
+    return (await this.organizationModel
+      .findOneAndUpdate({ id: _id, member_id: member_id }, { ...data })
+      .exec()) as unknown as Organization;
   }
 }
