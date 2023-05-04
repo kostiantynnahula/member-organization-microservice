@@ -1,7 +1,7 @@
 import { Prop } from '@nestjs/mongoose';
 
 export enum Role {
-  CREATOR = 'CREATOR',
+  ADMIN = 'ADMIN',
   MEMBER = 'MEMBER',
 }
 

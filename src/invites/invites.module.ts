@@ -4,6 +4,7 @@ import { InvitesController } from './invites.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Invite, InviteSchema } from './invite.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MailService } from './../utils/services/mail.service';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     ]),
   ],
-  providers: [InvitesService],
+  providers: [InvitesService, MailService],
   controllers: [InvitesController],
 })
 export class InvitesModule {}

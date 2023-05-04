@@ -19,7 +19,7 @@ export class OrganizationsController {
     return await this.organizationService.create({
       name,
       description,
-      members: [{ ...creator, role: Role.CREATOR }],
+      members: [{ ...creator, role: Role.ADMIN }],
     });
   }
 

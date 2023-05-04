@@ -3,9 +3,8 @@ export interface MailGetMany {
   limit?: number;
 }
 
-export interface SendMailInput {
-  from: string;
-  to: string;
-  subject: string;
-  body: string;
+export interface SendMailInvite {
+  email: string;
+  token: string;
+  secret: string;
 }

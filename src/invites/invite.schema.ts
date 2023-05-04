@@ -3,11 +3,6 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { Organization } from './../organizations/organization.schema';
 import { Transform, Type } from 'class-transformer';
 
-export enum InviteType {
-  ORGANIZATION = 'ORGANIZATION',
-  EVENT = 'EVENT',
-}
-
 export enum InviteStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
@@ -32,21 +27,14 @@ export class Invite {
   @Type(() => Organization)
   organization: Organization;
 
-  @Prop({
-    required: true,
-  })
-  from: string;
+  @Prop({ required: true })
+  secret: string;
 
-  @Prop({
-    required: true,
-  })
-  to: string;
+  @Prop({ required: true })
+  token: string;
 
-  @Prop({
-    enum: InviteType,
-    required: true,
-  })
-  type: InviteType;
+  @Prop({ required: true })
+  email: string;
 
   @Prop({
     enum: InviteStatus,

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   MailGetMany,
-  SendMailInput,
+  SendMailInvite,
 } from './../interfaces/services/mail.interfaces';
 
 @Injectable()
@@ -31,11 +31,11 @@ export class MailService {
     );
   }
 
-  sendMail(payload: SendMailInput) {
+  sendInvite(payload: SendMailInvite) {
     return this.client.send(
       {
         entity: 'mails',
-        cmd: 'send-mail',
+        cmd: 'send-invite',
       },
       payload,
     );

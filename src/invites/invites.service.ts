@@ -4,6 +4,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { InviteDocument, Invite } from './invite.schema';
 import { CreateInviteInput } from './inputs/create.input';
 
+type CreateInvite = CreateInviteInput & {
+  token: string;
+  secret: string;
+};
+
 @Injectable()
 export class InvitesService {
   constructor(
@@ -11,7 +16,7 @@ export class InvitesService {
     private inviteModel: Model<InviteDocument>,
   ) {}
 
-  async createOne(data: CreateInviteInput): Promise<Invite> {
+  async createOne(data: CreateInvite): Promise<Invite> {
     const invite = new this.inviteModel(data);
     const res = invite.save();
     return res as unknown as Invite;
@@ -35,15 +40,6 @@ export class InvitesService {
     return (await this.inviteModel
       .findOne({ id: _id })
       .exec()) as unknown as Invite;
-  }
-
-  async getRelatedInvites(member_id: string): Promise<Invite> {
-    const res = await this.inviteModel
-      .find({
-        $or: [{ from: member_id }, { to: member_id }],
-      })
-      .exec();
-    return res as unknown as Invite;
   }
 
   async getOneByEmail(_id: string, email: string): Promise<Invite> {
