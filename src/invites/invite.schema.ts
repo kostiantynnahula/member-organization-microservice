@@ -34,7 +34,10 @@ export class Invite {
   token: string;
 
   @Prop({ required: true })
-  email: string;
+  from: string;
+
+  @Prop({ required: true })
+  to: string;
 
   @Prop({
     enum: InviteStatus,

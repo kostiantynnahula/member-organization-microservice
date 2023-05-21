@@ -3,15 +3,16 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InvitesService } from './invites.service';
 import { CreateInviteInput } from './inputs/create.input';
 import { UpdateInviteInput } from './inputs/update.input';
-import { GetByEmail } from './inputs/get-by-email.input';
 import { RandomGenerator } from './../utils/helpers/RandomGenerator';
 import { MailService } from './../utils/services/mail.service';
+import { OrganizationsService } from './../organizations/organizations.service';
+import { InviteStatus } from './invite.schema';
 
 @Controller('invites')
 export class InvitesController {
   constructor(
     private readonly invitesService: InvitesService,
-    private readonly mailService: MailService,
+    private readonly organizationService: OrganizationsService,
   ) {}
 
   @MessagePattern({
@@ -21,18 +22,23 @@ export class InvitesController {
   async createOne(@Payload() payload: CreateInviteInput) {
     const token = RandomGenerator.generateString(10);
     const secret = RandomGenerator.generateString(10);
+    const organization = await this.organizationService.getOrganizationById(
+      payload.orgId,
+    );
+
+    if (!organization) {
+      throw new Error('Organization not found');
+    }
+
     const invite = await this.invitesService.createOne({
       ...payload,
       token,
       secret,
+      organization,
+      status: InviteStatus.PENDING,
     });
-    if (invite) {
-      await this.mailService.sendInvite({
-        email: payload.email,
-        token,
-        secret,
-      });
-    }
+
+    return invite;
   }
 
   @MessagePattern({
@@ -54,10 +60,9 @@ export class InvitesController {
 
   @MessagePattern({
     entity: 'invite',
-    cmd: 'get-by-email',
+    cmd: 'get-org-invites',
   })
-  async getOneByIdAndEmail(@Payload() payload: GetByEmail) {
-    const { _id, email } = payload;
-    return await this.invitesService.getOneByEmail(_id, email);
+  async getOrgInvites(_id: string) {
+    return await this.invitesService.getListByOrgId(_id);
   }
 }

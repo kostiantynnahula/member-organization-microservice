@@ -5,9 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Invite, InviteSchema } from './invite.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MailService } from './../utils/services/mail.service';
+import { OrganizationsModule } from './../organizations/organizations.module';
 
 @Module({
   imports: [
+    OrganizationsModule,
     ClientsModule.register([
       {
         name: process.env.MAIL_MICROSERVICE_NAME || 'MAIL_MICROSERVICE',

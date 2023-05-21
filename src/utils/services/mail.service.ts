@@ -31,11 +31,12 @@ export class MailService {
     );
   }
 
-  sendInvite(payload: SendMailInvite) {
+  organizationInvite(payload: SendMailInvite) {
+    console.log(payload, 'organization invite');
     return this.client.send(
       {
         entity: 'mails',
-        cmd: 'send-invite',
+        cmd: 'org-invite',
       },
       payload,
     );

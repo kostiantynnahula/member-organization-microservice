@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { InviteDocument, Invite } from './invite.schema';
-import { CreateInviteInput } from './inputs/create.input';
+import { InviteDocument, Invite, InviteStatus } from './invite.schema';
+import { Organization } from './../organizations/organization.schema';
 
-type CreateInvite = CreateInviteInput & {
+type CreateInvite = {
   token: string;
   secret: string;
+  organization: Organization;
+  from: string;
+  to: string;
+  status: InviteStatus;
 };
 
 @Injectable()
@@ -45,5 +49,13 @@ export class InvitesService {
   async getOneByEmail(_id: string, email: string): Promise<Invite> {
     const res = await this.inviteModel.findOne({ email, _id }).exec();
     return res as unknown as Invite;
+  }
+
+  async getListByOrgId(_id: string): Promise<Invite[]> {
+    return (await this.inviteModel
+      .find({
+        organization: _id,
+      })
+      .exec()) as unknown as Invite[];
   }
 }

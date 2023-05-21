@@ -22,6 +22,12 @@ export class OrganizationsService {
       .exec()) as unknown as Organization;
   }
 
+  async getOrganizationById(_id: string): Promise<Organization> {
+    return (await this.organizationModel.findById(
+      _id,
+    )) as unknown as Organization;
+  }
+
   async findByMember(member_id: string) {
     return (await this.organizationModel
       .find({ members: { $elemMatch: { _id: member_id } } })

@@ -4,7 +4,8 @@ export interface MailGetMany {
 }
 
 export interface SendMailInvite {
-  email: string;
+  from: string;
+  to: string;
   token: string;
   secret: string;
 }

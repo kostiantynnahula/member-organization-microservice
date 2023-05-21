@@ -1,16 +1,15 @@
 import { IsDefined, IsEmail, IsNotEmpty } from 'class-validator';
-import { Organization } from './../../organizations/organization.schema';
-import { InviteStatus } from './../invite.schema';
 
 export class CreateInviteInput {
   @IsDefined()
   @IsNotEmpty()
-  organization: Organization;
+  orgId: string;
 
   @IsDefined()
   @IsEmail()
-  email: string;
+  from: string;
 
   @IsDefined()
-  status?: InviteStatus;
+  @IsEmail()
+  to: string;
 }
