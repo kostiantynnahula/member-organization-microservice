@@ -4,7 +4,6 @@ import { InvitesService } from './invites.service';
 import { CreateInviteInput } from './inputs/create.input';
 import { UpdateInviteInput } from './inputs/update.input';
 import { RandomGenerator } from './../utils/helpers/RandomGenerator';
-import { MailService } from './../utils/services/mail.service';
 import { OrganizationsService } from './../organizations/organizations.service';
 import { InviteStatus } from './invite.schema';
 
