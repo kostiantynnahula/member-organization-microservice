@@ -1,17 +1,20 @@
 import { Controller } from '@nestjs/common';
 import { MembersService } from './members.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { MemberEditInput } from './inputs/member-edit.input';
 
 @Controller('members')
 export class MembersController {
   constructor(private readonly memberService: MembersService) {}
 
   @MessagePattern({
-    entity: 'member',
-    cmd: 'edit',
+    entity: 'organization-member',
+    cmd: 'update',
   })
-  async editOne() {
-    // edit member item
+  async editOne(@Payload() payload: MemberEditInput) {
+    const { memberId, role, organizationId } = payload;
+    await this.memberService.editMember(memberId, organizationId, role);
+    return true;
   }
 
   @MessagePattern({

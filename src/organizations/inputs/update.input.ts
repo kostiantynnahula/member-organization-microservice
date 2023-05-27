@@ -1,5 +1,4 @@
 import { IsOptional, IsNotEmpty, IsDefined } from 'class-validator';
-import { Member } from './../../members/inputs/member.input';
 
 export class UpdateOrganizationInput {
   @IsDefined()
@@ -15,6 +14,4 @@ export class UpdateOrganizationInput {
 
   @IsDefined()
   member_id: string;
-  // @IsOptional()
-  // members: Member[];
 }

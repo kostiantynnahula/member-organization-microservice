@@ -1,9 +1,12 @@
-import { Prop } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export enum Role {
   ADMIN = 'ADMIN',
   MEMBER = 'MEMBER',
 }
+
+export type MemberDocument = HydratedDocument<SchemaFactory>;
 
 export class Member {
   @Prop()
@@ -18,3 +21,5 @@ export class Member {
   @Prop()
   role: Role;
 }
+
+export const MemberSchema = SchemaFactory.createForClass(Member);
