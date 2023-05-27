@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MembersService } from './members.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { MemberEditInput } from './inputs/member-edit.input';
+import { MemberDeleteInput } from './inputs/member-delete.input';
 
 @Controller('members')
 export class MembersController {
@@ -13,15 +14,15 @@ export class MembersController {
   })
   async editOne(@Payload() payload: MemberEditInput) {
     const { memberId, role, organizationId } = payload;
-    await this.memberService.editMember(memberId, organizationId, role);
-    return true;
+    return await this.memberService.editMember(memberId, organizationId, role);
   }
 
   @MessagePattern({
-    entity: 'member',
+    entity: 'organization-member',
     cmd: 'delete',
   })
-  async deleteOne() {
-    // delete member item
+  async deleteOne(@Payload() payload: MemberDeleteInput) {
+    const { memberId, organizationId } = payload;
+    return await this.memberService.deleteMember(memberId, organizationId);
   }
 }

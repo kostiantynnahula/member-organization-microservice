@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OrganizationsService } from './../organizations/organizations.service';
-import { Member, MemberDocument, Role } from './member.schema';
+import { Role } from './member.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -15,8 +14,11 @@ export class MembersService {
     private organizationModel: Model<OrganizationDocument>,
   ) {}
 
-  async editMember(_id: string, orgId: string, role: Role): Promise<void> {
-    console.log(orgId);
+  async editMember(
+    _id: string,
+    orgId: string,
+    role: Role,
+  ): Promise<Organization> {
     const organization = await this.organizationModel.findById<Organization>(
       orgId,
     );
@@ -26,9 +28,18 @@ export class MembersService {
     );
 
     await this.organizationModel.findByIdAndUpdate(orgId, organization);
+
+    return organization;
   }
 
-  async deleteMember(_id: string): Promise<void> {
-    // delete member item
+  async deleteMember(_id: string, orgId: string): Promise<Organization> {
+    const organization = await this.organizationModel.findById<Organization>(
+      orgId,
+    );
+    organization.members = organization.members.filter((m) => m._id !== _id);
+
+    await this.organizationModel.findByIdAndUpdate(orgId, organization);
+
+    return organization;
   }
 }
