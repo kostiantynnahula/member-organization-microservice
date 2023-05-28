@@ -6,6 +6,7 @@ import { UpdateInviteInput } from './inputs/update.input';
 import { RandomGenerator } from './../utils/helpers/RandomGenerator';
 import { OrganizationsService } from './../organizations/organizations.service';
 import { InviteStatus } from './invite.schema';
+import { GetInviteByParamsInput } from './inputs/get-by-params.input';
 
 @Controller('invites')
 export class InvitesController {
@@ -63,5 +64,13 @@ export class InvitesController {
   })
   async getOrgInvites(_id: string) {
     return await this.invitesService.getListByOrgId(_id);
+  }
+
+  @MessagePattern({
+    entity: 'invite',
+    cmd: 'get-by-params',
+  })
+  async getByParams(@Payload() payload: GetInviteByParamsInput) {
+    return await this.invitesService.getInviteByParams(payload);
   }
 }

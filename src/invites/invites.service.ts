@@ -13,6 +13,8 @@ type CreateInvite = {
   status: InviteStatus;
 };
 
+type InviteByParams = Pick<CreateInvite, 'to' | 'secret' | 'token'>;
+
 @Injectable()
 export class InvitesService {
   constructor(
@@ -57,5 +59,16 @@ export class InvitesService {
         organization: _id,
       })
       .exec()) as unknown as Invite[];
+  }
+
+  async getInviteByParams(params: InviteByParams): Promise<Invite> {
+    const { to, secret, token } = params;
+    return await this.inviteModel
+      .findOne<Invite>({
+        to,
+        secret,
+        token,
+      })
+      .exec();
   }
 }

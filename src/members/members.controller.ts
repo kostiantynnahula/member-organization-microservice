@@ -28,7 +28,7 @@ export class MembersController {
   }
 
   @MessagePattern({
-    entity: 'organization-membet',
+    entity: 'organization-member',
     cmd: 'add',
   })
   async addOne(@Payload() payload: MemberAddInput) {
