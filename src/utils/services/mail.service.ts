@@ -32,7 +32,6 @@ export class MailService {
   }
 
   organizationInvite(payload: SendMailInvite) {
-    console.log(payload, 'organization invite');
     return this.client.send(
       {
         entity: 'mails',
