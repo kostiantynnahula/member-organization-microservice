@@ -11,5 +11,5 @@ export class GetInviteByParamsInput {
 
   @IsDefined()
   @IsEmail()
-  to: string;
+  email: string;
 }
